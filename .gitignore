@@ -1,0 +1,14 @@
+# Local planning records
+.planning/
+
+# Private writing data
+workspace/articles/
+workspace/writing-samples/
+workspace/author-profile.md
+workspace/style-lessons.md
+
+# Local editor and runtime noise
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
