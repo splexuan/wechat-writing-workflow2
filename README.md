@@ -1,6 +1,6 @@
 # 写作流程 v2
 
-一套只负责文字创作的轻量公众号写作 Skill。它把主题、链接、零散素材或已有草稿推进为文字终稿，不要求每篇文章经过固定九阶段，也不把内部流程暴露给对话。
+一套只负责文字创作的轻量公众号写作 Skill。它把主题、链接、零散素材或已有草稿推进为文字终稿，不要求每篇文章走完一套固定阶段，也不把内部流程暴露给对话。
 
 ## 这个 Skill 做什么
 
@@ -30,7 +30,7 @@ workspace/                 私有作者档案、样本、文章项目
 └── articles/              需要保存或跨轮继续的文章
 ```
 
-`workspace/articles/` 用于需要落盘的文章；普通单轮写作可以直接在聊天中完成，不必创建目录。`workspace/writing-samples/` 可以放作者本人的代表文章，供风格学习使用。
+`workspace/articles/` 用于需要落盘的文章；普通单轮写作可以直接在聊天中完成，不必创建目录。`workspace/writing-samples/` 可以放作者本人的代表文章，供风格学习使用。这两个目录被 `.gitignore` 排除，克隆后并不存在，会在需要时按需创建。
 
 ## 快速开始
 
@@ -115,7 +115,8 @@ workspace/articles/YYYYMMDD-short-title/
 ├── sources.md       # 只有需要研究时才创建
 ├── draft.md
 ├── review.md
-└── final.md
+├── final.md
+└── versions/        # 只有实质重写且需要保留旧稿时创建
 ```
 
 在本项目中，用户数据默认放在与 Skill 同级的 `workspace/`，不要写入 Skill 包。若 Skill 被安装到别处，则使用当前工作区中用户指定或已有的写作目录。
@@ -145,4 +146,13 @@ workspace/articles/YYYYMMDD-short-title/
 
 ## 安装与调用
 
-Skill 尚未自动安装到全局目录。可以直接在本项目中使用；若要全局调用，再把 `wechat-writing/` 安装或复制到 Codex Skills 目录，之后用 `$wechat-writing` 调用。
+Skill 尚未自动安装到全局目录。可以直接在本项目中使用；若要全局调用，把 `wechat-writing/` 整个目录复制到对应宿主的用户级 Skills 目录即可：
+
+- WorkBuddy：`~/.workbuddy/skills/`
+- Codex：Codex 的 Skills 目录
+
+复制后按宿主约定调用，Codex 中为 `$wechat-writing`。
+
+## 许可
+
+本项目使用 MIT 许可证，详见 [LICENSE](LICENSE)。

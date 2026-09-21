@@ -62,7 +62,8 @@ workspace/
         ├── sources.md    # 只有需要研究时才创建
         ├── draft.md
         ├── review.md
-        └── final.md
+        ├── final.md
+        └── versions/     # 只有实质重写且需要保留旧稿时创建
 ```
 
 建立文章目录时只创建当前真正需要的 Markdown 文件，不创建空的阶段文件。已有用户草稿不得被覆盖；需要保存修改稿时写入文章目录，并保留原文件。
