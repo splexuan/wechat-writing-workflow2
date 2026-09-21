@@ -12,6 +12,7 @@ description: 将中文主题、链接、零散素材或已有草稿发展为公�
 - **只要方向、选题或角度**：读取 [选题与方向](references/ideation.md)，给出候选并等待选择。
 - **要求直接写成文章**：读取 [写作与成稿](references/drafting.md)。主题仍宽泛时在内部选择最可靠的方向继续，不因流程暂停；只有方向会改变用户立场时才询问。
 - **事实密集、时效性强或高风险文章**：按 [研究与证据](references/research.md) → [写作与成稿](references/drafting.md) 执行；若还需要解释机制或形成争议性判断，在两者之间读取 [论证与提纲](references/argument.md)。
+- **公共议题或热点分析，且希望传到作者读者圈之外**：在上述流程之外，写作前额外读取 [锐化手法](references/sharpening.md)，用真实存在的预设和可查专名替代抽象判断；个人随笔、复盘和教程不读取。
 - **文体确实不清楚**：写作前读取 [文体选择](references/article-types.md)，选定一种主任务后不再反复切换。
 - **已有草稿，需要重新立论、调整结构或大幅增删**：读取 [改稿](references/revision.md) → [审校](references/review.md)；若还明确要求去 AI 味，在两者之间读取 [自然化编辑](references/natural-editing.md)。
 - **已有文字，只要求局部润色、去 AI 味、更自然或像作者本人**：读取 [自然化编辑](references/natural-editing.md) → [审校](references/review.md)，不因“已有草稿”额外加载结构改稿。
