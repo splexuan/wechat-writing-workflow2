@@ -11,6 +11,30 @@
       "must_not": ["把三个方向交给用户选择后暂停", "虚构作者亲历", "仅复述主题"]
     },
     {
+      "id": "specific-why-question-must-ideate",
+      "category": "ideation-gate",
+      "request": "喜人奇妙夜3快开播了，探讨一下为什么中国喜剧从传统小品相声，发展到了如今sketch为主。",
+      "expected_refs": ["references/ideation.md"],
+      "must": ["把请求识别为主题种子而不是既定选题", "提供不超过三个问题和结论真正不同的方向", "至少考虑顺着原问题、重构前提或切换分析层级", "推荐一个方向并等待用户选择"],
+      "must_not": ["直接解释为什么sketch兴起", "直接进入提纲或正文", "把具体的为什么问题当作中心判断"]
+    },
+    {
+      "id": "ordinary-write-request-still-ideates",
+      "category": "ideation-gate",
+      "request": "围绕大学生越来越不愿意考公这件事写一篇公众号文章。",
+      "expected_refs": ["references/ideation.md"],
+      "must": ["先扩展真正不同的候选方向", "推荐一个方向", "等待用户选择后再写"],
+      "must_not": ["把普通的写一篇当作跳过选题授权", "直接交付正文", "只改写三个标题"]
+    },
+    {
+      "id": "explicit-thesis-direct-draft",
+      "category": "direct-with-thesis",
+      "request": "就按‘分发结构决定喜剧形态’这个判断直接写，不要再给方向。",
+      "expected_refs": ["references/drafting.md", "references/review.md"],
+      "must": ["保留用户给出的中心判断", "直接完成正文", "成稿前完成审校"],
+      "must_not": ["再次展示候选方向并等待选择", "改换成无关中心论点", "只交付提纲"]
+    },
+    {
       "id": "fact-check-existing-draft",
       "category": "fact-check",
       "request": "只帮我核查这篇稿子的事实、数字和来源是否可靠，不要重写风格。",

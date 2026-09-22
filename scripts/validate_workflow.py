@@ -94,7 +94,8 @@ def validate_workspace_contract() -> None:
 
 
 def validate_routing_contract() -> None:
-    lines = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8").splitlines()
+    skill_text = (SKILL_DIR / "SKILL.md").read_text(encoding="utf-8")
+    lines = skill_text.splitlines()
 
     def route_line(marker: str) -> str:
         matches = [line for line in lines if marker in line]
@@ -103,7 +104,7 @@ def validate_routing_contract() -> None:
         return matches[0]
 
     contracts = [
-        ("要求直接写成文章", ["references/ideation.md", "references/drafting.md"]),
+        ("明确要求跳过选题并直接成稿", ["references/ideation.md", "references/drafting.md"]),
         ("要求事实检查", ["references/research.md", "references/review.md"]),
         ("继续上次文章", ["references/workspace.md"]),
         ("学习作者风格", ["references/style-learning.md", "references/workspace.md"]),
@@ -113,6 +114,31 @@ def validate_routing_contract() -> None:
         missing = [reference for reference in references if reference not in line]
         if missing:
             fail(f"routing rule '{marker}' is missing: {', '.join(missing)}")
+
+    topic_gate_phrases = [
+        "给出新主题、事件、现象、链接或研究问题，但尚未给出中心判断",
+        "问题即使很具体",
+        "普通的“写一篇”不是跳过指令",
+        "等待用户选择",
+    ]
+    missing_gate_phrases = [
+        phrase for phrase in topic_gate_phrases if phrase not in skill_text
+    ]
+    if missing_gate_phrases:
+        fail(f"topic gate is incomplete: {', '.join(missing_gate_phrases)}")
+
+    ideation = (SKILL_DIR / "references" / "ideation.md").read_text(encoding="utf-8")
+    ideation_phrases = [
+        "问题再具体，也不等于已经有选题",
+        "展示方向卡和推荐后停止",
+        "质疑或重构原前提",
+        "切换到不同参与者或分析层级",
+    ]
+    missing_ideation_phrases = [
+        phrase for phrase in ideation_phrases if phrase not in ideation
+    ]
+    if missing_ideation_phrases:
+        fail(f"ideation gate is incomplete: {', '.join(missing_ideation_phrases)}")
 
     drafting = (SKILL_DIR / "references" / "drafting.md").read_text(encoding="utf-8")
     if "[审校](review.md)" not in drafting:
@@ -174,6 +200,22 @@ def validate_cases() -> int:
     missing_categories = expected_categories - categories
     if missing_categories:
         fail(f"missing behavior categories: {', '.join(sorted(missing_categories))}")
+
+    required_topic_gate_cases = {
+        "specific-why-question-must-ideate": "references/ideation.md",
+        "ordinary-write-request-still-ideates": "references/ideation.md",
+        "explicit-thesis-direct-draft": "references/drafting.md",
+    }
+    scenarios_by_id = {scenario["id"]: scenario for scenario in scenarios}
+    for scenario_id, required_reference in required_topic_gate_cases.items():
+        scenario = scenarios_by_id.get(scenario_id)
+        if scenario is None:
+            fail(f"missing topic-gate behavior scenario: {scenario_id}")
+        if required_reference not in scenario["expected_refs"]:
+            fail(
+                f"topic-gate scenario {scenario_id} must reference: "
+                f"{required_reference}"
+            )
     return len(scenarios)
 
 

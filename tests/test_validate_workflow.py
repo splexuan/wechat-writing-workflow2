@@ -85,6 +85,27 @@ class ValidateWorkflowTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "要求事实检查"):
             validate_workflow.validate_routing_contract()
 
+    def test_topic_gate_cannot_treat_a_specific_question_as_a_chosen_angle(self) -> None:
+        ideation = validate_workflow.SKILL_DIR / "references" / "ideation.md"
+        text = ideation.read_text(encoding="utf-8")
+        text = text.replace("问题再具体，也不等于已经有选题", "具体问题视为明确选题")
+        ideation.write_text(text, encoding="utf-8")
+        with self.assertRaisesRegex(AssertionError, "ideation gate is incomplete"):
+            validate_workflow.validate_routing_contract()
+
+    def test_required_topic_gate_scenario_cannot_be_removed(self) -> None:
+        data = json.loads(validate_workflow.CASES_FILE.read_text(encoding="utf-8"))
+        data["scenarios"] = [
+            scenario
+            for scenario in data["scenarios"]
+            if scenario["id"] != "specific-why-question-must-ideate"
+        ]
+        validate_workflow.CASES_FILE.write_text(
+            json.dumps(data, ensure_ascii=False), encoding="utf-8"
+        )
+        with self.assertRaisesRegex(AssertionError, "missing topic-gate behavior scenario"):
+            validate_workflow.validate_cases()
+
 
 if __name__ == "__main__":
     unittest.main()
