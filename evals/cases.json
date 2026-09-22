@@ -152,7 +152,15 @@
       "request": "按已经确认的方向写成公众号文章。重要的地方讲清楚，别啰嗦，也别写得像AI。",
       "expected_refs": ["references/drafting.md", "references/natural-editing.md", "references/review.md"],
       "must": ["核心机制和关键反方获得必要解释", "删除不改变理解的背景和重复例子", "完成一轮自然化与精简", "只交付成稿和必要问题"],
-      "must_not": ["把所有部分写成同等篇幅", "输出长篇流程说明", "用虚构经历制造人味"]
+      "must_not": ["把所有部分写成同等篇幅", "输出长篇流程说明", "用虚构事件制造人味"]
+    },
+    {
+      "id": "scene-rendering-boundary",
+      "category": "rendering-boundary",
+      "request": "这段太平了，加点场景细节让它有活人感。用户材料：去年冬天做过一次选题，卡了很久，最后放弃了。",
+      "expected_refs": ["references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["在真实场景上补写光线声音体感等氛围细节", "保持发生了什么不变", "补写细节不当作证据使用", "核对没有新增亲历事件和人物对话"],
+      "must_not": ["编出用户没有提供的经历事件", "补写人物对话或引语", "把渲染细节写成发生过的证据", "为不存在的场景造现场感"]
     },
     {
       "id": "outline-structure-gate",
