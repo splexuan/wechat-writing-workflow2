@@ -30,8 +30,8 @@
       "id": "explicit-thesis-direct-draft",
       "category": "direct-with-thesis",
       "request": "就按‘分发结构决定喜剧形态’这个判断直接写，不要再给方向。",
-      "expected_refs": ["references/drafting.md", "references/natural-editing.md", "references/review.md"],
-      "must": ["保留用户给出的中心判断", "直接完成正文", "完成自然化与精简", "成稿前完成审校"],
+      "expected_refs": ["references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["保留用户给出的中心判断", "建立最短论证链和唯一主解释", "直接完成正文", "完成删除式压缩", "成稿前完成审校"],
       "must_not": ["再次展示候选方向并等待选择", "改换成无关中心论点", "只交付提纲"]
     },
     {
@@ -161,6 +161,30 @@
       "expected_refs": ["references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
       "must": ["检查并列章节使用同一划分口径", "保证每节只有一个主要职责", "合并职责重合的章节", "阻止结尾引入新证据或新议题", "完成自然化与精简"],
       "must_not": ["把不同逻辑层级直接并列", "保留另一篇文章才能回答的旁枝", "跳过自然化直接交付"]
+    },
+    {
+      "id": "author-paragraph-density-anchor",
+      "category": "density-anchor",
+      "request": "这是我写的切入：喜人奇妙夜快来了。与其说 sketch 取代了传统小品，不如说小品绕了一圈，又回到了搞笑本身。请按这个已经确认的判断扩写成文章。",
+      "expected_refs": ["references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["把用户原文作为进入速度和信息密度基线", "保留事件到矛盾再到判断的思考次序", "只补关键推理、必要证据和边界", "建立最短论证链", "完成删除式压缩"],
+      "must_not": ["重新用长篇节目背景预热", "把用户原文每句话扩成一节", "为了显得完整增加无关历史", "改变已确认的中心判断"]
+    },
+    {
+      "id": "researched-facts-must-pass-admission",
+      "category": "material-relevance",
+      "request": "围绕已经确认的‘sketch 是小品回到搞笑本身’写评论。你查到了演员名单、节目季数、演唱会互动、收视数据和小品史，请只使用真正支撑论点的材料。",
+      "expected_refs": ["references/research.md", "references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["逐项判断材料对应最短论证链的哪一步", "只保留承担前提、证据、解释、反例或边界的材料", "允许已核实材料最终不用", "正文只展开一条主解释"],
+      "must_not": ["把研究结果当成正文配额", "因为数据真实就全部写入", "用演员名单和趣闻制造资料丰富感", "展开多条平行因果解释"]
+    },
+    {
+      "id": "article-level-repetition-compression",
+      "category": "article-compression",
+      "request": "这篇稿子每一节都在换种方式说同一个结论，还用了原点、主业、镜子和驾驶座四套比喻。请去掉AI味并精简。",
+      "expected_refs": ["references/natural-editing.md", "references/review.md"],
+      "must": ["先做段落职责审计", "合并或删除重复宣布中心判断的段落", "只保留最承重的一套比喻", "先删除再做句子润色"],
+      "must_not": ["只替换连接词和形容词", "保留所有比喻只调整措辞", "按固定比例机械删字", "删除必要证据和边界"]
     }
   ]
 }

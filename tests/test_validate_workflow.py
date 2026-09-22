@@ -143,6 +143,43 @@ class ValidateWorkflowTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "ideation gate is incomplete"):
             validate_workflow.validate_routing_contract()
 
+    def test_material_admission_gate_cannot_be_removed(self) -> None:
+        research = validate_workflow.SKILL_DIR / "references" / "research.md"
+        text = research.read_text(encoding="utf-8")
+        text = text.replace("研究结果是备选材料，不是正文配额", "研究结果应尽量进入正文")
+        research.write_text(text, encoding="utf-8")
+        with self.assertRaisesRegex(
+            AssertionError, "material-admission gate is incomplete"
+        ):
+            validate_workflow.validate_routing_contract()
+
+    def test_article_level_compression_gate_cannot_be_removed(self) -> None:
+        natural_editing = (
+            validate_workflow.SKILL_DIR / "references" / "natural-editing.md"
+        )
+        text = natural_editing.read_text(encoding="utf-8")
+        text = text.replace("段落职责审计", "段落润色")
+        natural_editing.write_text(text, encoding="utf-8")
+        with self.assertRaisesRegex(
+            AssertionError, "article-level compression gate is incomplete"
+        ):
+            validate_workflow.validate_routing_contract()
+
+    def test_material_relevance_case_cannot_be_removed(self) -> None:
+        data = json.loads(validate_workflow.CASES_FILE.read_text(encoding="utf-8"))
+        data["scenarios"] = [
+            scenario
+            for scenario in data["scenarios"]
+            if scenario["id"] != "researched-facts-must-pass-admission"
+        ]
+        validate_workflow.CASES_FILE.write_text(
+            json.dumps(data, ensure_ascii=False), encoding="utf-8"
+        )
+        with self.assertRaisesRegex(
+            AssertionError, "missing writing-quality behavior scenarios"
+        ):
+            validate_workflow.validate_cases()
+
 
 if __name__ == "__main__":
     unittest.main()

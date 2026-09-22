@@ -106,8 +106,25 @@ def validate_routing_contract() -> None:
 
     contracts = [
         ("明确要求直接成稿，但尚未确认中心主题", ["references/ideation.md"]),
-        ("用户已经明确确认最终中心主题", ["references/drafting.md", "references/natural-editing.md", "references/review.md"]),
-        ("事实密集、时效性强或高风险文章", ["references/research.md", "references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"]),
+        (
+            "用户已经明确确认最终中心主题",
+            [
+                "references/argument.md",
+                "references/drafting.md",
+                "references/natural-editing.md",
+                "references/review.md",
+            ],
+        ),
+        (
+            "事实密集、时效性强或高风险文章",
+            [
+                "references/research.md",
+                "references/argument.md",
+                "references/drafting.md",
+                "references/natural-editing.md",
+                "references/review.md",
+            ],
+        ),
         ("要求事实检查", ["references/research.md", "references/review.md"]),
         ("继续上次文章", ["references/workspace.md"]),
         ("学习作者风格", ["references/style-learning.md", "references/workspace.md"]),
@@ -148,7 +165,9 @@ def validate_routing_contract() -> None:
 
     workflow_phrases = [
         "最小 brief",
-        "自然化与精简",
+        "最短论证链",
+        "材料准入",
+        "删除式压缩",
         "重要机制和关键反方讲透",
         "默认只交付成稿",
     ]
@@ -163,6 +182,8 @@ def validate_routing_contract() -> None:
         "所有新生成的完整初稿和全文改稿",
         "先转入 [自然化编辑](natural-editing.md)",
         "按重要性分配解释量",
+        "进入速度和信息密度基线",
+        "来源可靠只能证明它是真的",
     ]
     missing_drafting_phrases = [
         phrase for phrase in drafting_phrases if phrase not in drafting
@@ -172,9 +193,12 @@ def validate_routing_contract() -> None:
 
     argument = (SKILL_DIR / "references" / "argument.md").read_text(encoding="utf-8")
     argument_phrases = [
+        "最短论证链",
         "同层比较",
         "一节一职",
         "去重合并",
+        "单一主解释",
+        "材料准入",
         "旁枝止步",
         "结尾不加料",
     ]
@@ -189,12 +213,55 @@ def validate_routing_contract() -> None:
     )
     if "完整新稿和全文改稿必须执行一轮" not in natural_editing:
         fail("natural-editing pass must be mandatory for complete drafts")
+    natural_editing_phrases = [
+        "文章级删除式压缩",
+        "段落职责审计",
+        "中心判断去重",
+        "比喻家族收束",
+    ]
+    missing_natural_editing_phrases = [
+        phrase for phrase in natural_editing_phrases if phrase not in natural_editing
+    ]
+    if missing_natural_editing_phrases:
+        fail(
+            "article-level compression gate is incomplete: "
+            + ", ".join(missing_natural_editing_phrases)
+        )
 
     research = (SKILL_DIR / "references" / "research.md").read_text(encoding="utf-8")
     if "普通单轮请求可在当前任务上下文中维护" not in research:
         fail("single-turn research must support a non-persistent evidence ledger")
     if "研究必须发生在方向和最小 brief 确定之后" not in research:
         fail("research must follow the chosen direction and minimum brief")
+    research_phrases = [
+        "材料准入门",
+        "研究结果是备选材料，不是正文配额",
+        "删除它，读者会具体失去哪一项",
+    ]
+    missing_research_phrases = [
+        phrase for phrase in research_phrases if phrase not in research
+    ]
+    if missing_research_phrases:
+        fail(
+            "material-admission gate is incomplete: "
+            + ", ".join(missing_research_phrases)
+        )
+
+    review = (SKILL_DIR / "references" / "review.md").read_text(encoding="utf-8")
+    review_phrases = [
+        "最短论证链",
+        "只展开一条主解释",
+        "研究结果没有被当成正文配额",
+        "相近的进入速度与解释密度",
+    ]
+    missing_review_phrases = [
+        phrase for phrase in review_phrases if phrase not in review
+    ]
+    if missing_review_phrases:
+        fail(
+            "relevance-and-compression review gate is incomplete: "
+            + ", ".join(missing_review_phrases)
+        )
 
 
 def validate_cases() -> int:
@@ -273,6 +340,9 @@ def validate_cases() -> int:
     required_quality_cases = {
         "concise-complete-draft",
         "outline-structure-gate",
+        "author-paragraph-density-anchor",
+        "researched-facts-must-pass-admission",
+        "article-level-repetition-compression",
     }
     missing_quality_cases = required_quality_cases - scenarios_by_id.keys()
     if missing_quality_cases:
@@ -290,6 +360,8 @@ def validate_cases() -> int:
         "persisted-multiturn-article",
         "concise-complete-draft",
         "outline-structure-gate",
+        "author-paragraph-density-anchor",
+        "researched-facts-must-pass-admission",
     }
     for scenario_id in complete_draft_cases:
         scenario = scenarios_by_id.get(scenario_id)
