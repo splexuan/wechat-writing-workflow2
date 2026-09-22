@@ -10,15 +10,16 @@ description: 将中文主题、链接、零散素材或已有草稿发展为公�
 ## 判断当前请求
 
 - **只要方向、选题或角度**：读取 [选题与方向](references/ideation.md)，给出候选并等待选择。
-- **要求直接写成文章**：读取 [写作与成稿](references/drafting.md)。主题仍宽泛时在内部选择最可靠的方向继续，不因流程暂停；只有方向会改变用户立场时才询问。
+- **要求直接写成文章**：读取 [写作与成稿](references/drafting.md)。主题仍宽泛时，先在内部按 [选题与方向](references/ideation.md) 收敛出最可靠的方向，再继续成稿；不展示候选、不因流程暂停，只有方向会改变用户立场时才询问。
 - **事实密集、时效性强或高风险文章**：按 [研究与证据](references/research.md) → [写作与成稿](references/drafting.md) 执行；若还需要解释机制或形成争议性判断，在两者之间读取 [论证与提纲](references/argument.md)。
 - **公共议题或热点分析，且希望传到作者读者圈之外**：在上述流程之外，写作前额外读取 [锐化手法](references/sharpening.md)，用真实存在的预设和可查专名替代抽象判断；个人随笔、复盘和教程不读取。
 - **文体确实不清楚**：写作前读取 [文体选择](references/article-types.md)，选定一种主任务后不再反复切换。
 - **已有草稿，需要重新立论、调整结构或大幅增删**：读取 [改稿](references/revision.md) → [审校](references/review.md)；若还明确要求去 AI 味，在两者之间读取 [自然化编辑](references/natural-editing.md)。
 - **已有文字，只要求局部润色、去 AI 味、更自然或像作者本人**：读取 [自然化编辑](references/natural-editing.md) → [审校](references/review.md)，不因“已有草稿”额外加载结构改稿。
-- **只要求校对、审稿、事实检查或最终检查**：读取 [审校](references/review.md)。
-- **继续上次文章**：从文章目录读取 `brief.md`、最新草稿和 `review.md`，只恢复当前需要的上下文。
-- **学习作者风格、范文或人工修改**：读取 [风格学习](references/style-learning.md)。
+- **只要求校对、审稿或最终检查**：读取 [审校](references/review.md)。
+- **要求事实检查、来源核验或更新时效信息**：按 [研究与证据](references/research.md) → [审校](references/review.md) 执行；只修改证据不支持或已经过时的部分，不把核查扩成无关重写。
+- **继续上次文章、保存跨轮状态或管理作者资料**：先读取 [工作区与恢复](references/workspace.md)，按其中的路径解析和恢复顺序执行，再加载当前任务需要的写作参考。
+- **学习作者风格、范文或人工修改**：读取 [风格学习](references/style-learning.md)；需要长期保存时同时读取 [工作区与恢复](references/workspace.md)。
 - **规则仍难以判断或需要看正反例**：再读取 [判断示例](references/examples.md)，不默认加载。
 
 只读取当前任务需要的参考文件，不要一次加载全部规则。
@@ -50,13 +51,14 @@ description: 将中文主题、链接、零散素材或已有草稿发展为公�
 
 普通单轮请求可以直接在对话中完成，不强制落盘。用户要求保存、继续、多轮打磨或任务明显需要跨轮恢复时再创建文章目录。
 
-在本项目中，用户数据默认放在与 Skill 同级的 `workspace/`，不要写入 Skill 包。若 Skill 被安装到别处，则使用当前工作区中用户指定或已有的写作目录。
+需要落盘时，先按 [工作区与恢复](references/workspace.md) 解析写作工作区。不要用相对 Skill 安装目录的路径保存用户数据，也不要把作者资料、样本或文章写进 Skill 包。
 
 ```text
 workspace/
-├── author-profile.md       # 可从同名 .example 文件复制
-├── style-lessons.md        # 可从同名 .example 文件复制
+├── author-profile.md       # 从 Skill 的 assets 模板复制
+├── style-lessons.md        # 从 Skill 的 assets 模板复制
 ├── writing-samples/
+├── active-article.md       # 仅跨轮文章存在时使用
 └── articles/
     └── YYYYMMDD-short-title/
         ├── brief.md
@@ -67,7 +69,7 @@ workspace/
         └── versions/     # 只有实质重写且需要保留旧稿时创建
 ```
 
-建立文章目录时只创建当前真正需要的 Markdown 文件，不创建空的阶段文件。已有用户草稿不得被覆盖；需要保存修改稿时写入文章目录，并保留原文件。
+模板随 Skill 放在 `assets/`，只在需要相应文件时复制。建立文章目录时只创建当前真正需要的 Markdown 文件，不创建空的阶段文件。已有用户草稿不得被覆盖；需要保存修改稿时写入文章目录，并保留原文件。
 
 ## 不可破坏的边界
 

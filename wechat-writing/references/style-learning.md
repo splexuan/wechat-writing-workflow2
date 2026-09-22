@@ -18,9 +18,9 @@
 
 ## 作者档案
 
-用户愿意长期保存偏好时更新 `workspace/author-profile.md`。只记录会改变写作决策的信息：账号定位、主要读者、常见题材、期望声口、内容边界、偏好与反感、第一人称使用范围、真实个人材料的授权方式。
+用户愿意长期保存偏好时，先按 [工作区与恢复](workspace.md) 确定写作工作区，再更新其中的 `author-profile.md`。只记录会改变写作决策的信息：账号定位、主要读者、常见题材、期望声口、内容边界、偏好与反感、第一人称使用范围、真实个人材料的授权方式。
 
-文件不存在时从 `workspace/author-profile.example.md` 复制后再填写；不要把私人信息写回示例文件。
+文件不存在时，从 Skill 包内的 `assets/author-profile.template.md` 复制到已确定的写作工作区后再填写；不要把私人信息写回模板或 Skill 包。
 
 缺少档案不是阻断项。用户要求直接写时使用当前上下文，不进行完整问卷。
 
@@ -66,9 +66,9 @@
 - 新修改与旧规则冲突时，以用户本次选择为准；不要默默同时保留互相矛盾的规则。
 - 用户说“这次例外”时不沉淀。
 
-将规则写入 `workspace/style-lessons.md`，不要写回 Skill 包。
+将规则写入已确定写作工作区的 `style-lessons.md`，不要写回 Skill 包。
 
-文件不存在时从 `workspace/style-lessons.example.md` 复制；示例文件只保留空白结构。
+文件不存在时，从 Skill 包内的 `assets/style-lessons.template.md` 复制；模板只保留空白结构。
 
 ## 使用稳定规则
 

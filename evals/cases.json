@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "description": "公众号写作 Skill 的行为回归场景。期望约束行为和路由，不约束固定措辞。",
+  "scenarios": [
+    {
+      "id": "broad-topic-direct-draft",
+      "category": "broad-direct",
+      "request": "写一篇关于 AI 让人越来越不敢表达的公众号文章，直接给成稿。",
+      "expected_refs": ["references/ideation.md", "references/drafting.md", "references/review.md"],
+      "must": ["内部收敛一个有材料和边界的方向", "直接交付完整成稿", "成稿前完成审校"],
+      "must_not": ["把三个方向交给用户选择后暂停", "虚构作者亲历", "仅复述主题"]
+    },
+    {
+      "id": "fact-check-existing-draft",
+      "category": "fact-check",
+      "request": "只帮我核查这篇稿子的事实、数字和来源是否可靠，不要重写风格。",
+      "expected_refs": ["references/research.md", "references/review.md"],
+      "must": ["逐项核验会影响结论的事实", "区分事件日期和发布日期", "只修证据不支持或过时的部分"],
+      "must_not": ["把事实核查扩成结构重写", "用模型记忆代替当前来源", "添加无来源的新数字"]
+    },
+    {
+      "id": "ideas-only",
+      "category": "ideation",
+      "request": "我想写年轻人不爱社交，先给我几个真正不同的方向。",
+      "expected_refs": ["references/ideation.md"],
+      "must": ["提供不超过三个问题和结论真正不同的方向", "推荐一个方向并说明理由", "等待用户选择"],
+      "must_not": ["直接写完整文章", "只改写三个标题", "为凑数提供空方向"]
+    },
+    {
+      "id": "current-public-issue",
+      "category": "hot-analysis",
+      "request": "根据本周一个 AI 行业热点写篇能让圈外人看懂并愿意转发的分析。",
+      "expected_refs": ["references/research.md", "references/argument.md", "references/sharpening.md", "references/drafting.md", "references/review.md"],
+      "must": ["使用当前信息核验事件", "形成有边界的中心判断", "用可查专名和真实预设支撑文章"],
+      "must_not": ["把尚未发生的结果写成事实", "制造虚假反方", "套固定爆款段落"]
+    },
+    {
+      "id": "personal-tutorial",
+      "category": "tutorial",
+      "request": "用我给的操作记录写一篇新手教程，步骤清楚即可。",
+      "expected_refs": ["references/drafting.md", "references/review.md"],
+      "must": ["说明前提、动作、判断条件和完成标准", "只使用用户提供的个人材料", "保持教程主线"],
+      "must_not": ["强行制造争议性中心论点", "加载锐化手法改成公共议题评论", "虚构操作结果"]
+    },
+    {
+      "id": "local-natural-edit",
+      "category": "local-edit",
+      "request": "这段话太像 AI 了，改自然一点，但别动事实、结构和立场。",
+      "expected_refs": ["references/natural-editing.md", "references/review.md"],
+      "must": ["锁定事实、结构和立场", "做最小语言修改", "修改后回查不变量"],
+      "must_not": ["重新立论", "添加第一人称经历", "为了自然故意写乱"]
+    },
+    {
+      "id": "deep-revision-and-naturalize",
+      "category": "deep-revision",
+      "request": "这篇草稿论点散、结构也乱，请重写并顺便去掉 AI 味。",
+      "expected_refs": ["references/revision.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["先处理事实、任务、论证和结构", "再做一次自然化编辑", "保留原稿并完成终检"],
+      "must_not": ["先逐句润色再决定结构", "覆盖用户原稿", "引入未经提供的个人材料"]
+    },
+    {
+      "id": "resume-valid-pointer",
+      "category": "resume-single",
+      "request": "继续上次那篇文章。工作区里有有效的 active-article.md。",
+      "expected_refs": ["references/workspace.md"],
+      "must": ["校验活动指针位于当前工作区", "按 current 字段读取 brief 和当前工作文本", "只恢复当前步骤所需上下文"],
+      "must_not": ["扫描后改选另一篇文章", "把 versions 当作当前稿", "读取全部历史版本"]
+    },
+    {
+      "id": "resume-ambiguous-articles",
+      "category": "resume-ambiguous",
+      "request": "继续上次那篇文章，但工作区没有活动指针且有多篇候选。",
+      "expected_refs": ["references/workspace.md"],
+      "must": ["列出最近更新的至多三个候选", "只询问一次让用户选择", "选择后修复活动指针"],
+      "must_not": ["按目录顺序静默选择", "用标题相似度猜测", "覆盖任一候选稿件"]
+    },
+    {
+      "id": "learn-author-style",
+      "category": "style-learning",
+      "request": "比较原稿和我修改后的版本，记住以后可复用的写作偏好。",
+      "expected_refs": ["references/style-learning.md", "references/workspace.md"],
+      "must": ["把单次修改记录为 soft 规则", "限定规则的最窄适用范围", "将偏好保存到已解析的工作区"],
+      "must_not": ["直接升级为全局稳定规则", "写回 Skill 模板", "复制第三方辨识度高的表达"]
+    },
+    {
+      "id": "single-turn-research-no-files",
+      "category": "single-turn-research",
+      "request": "查清一个最新产品变化，整理成一段可直接发布的说明，不用保存文件。",
+      "expected_refs": ["references/research.md", "references/drafting.md", "references/review.md"],
+      "must": ["在当前任务中维护主张证据关系", "核验产品直接来源和日期", "直接在对话中交付"],
+      "must_not": ["强制创建 sources.md", "创建文章目录", "把产品宣称写成稳定结果"]
+    },
+    {
+      "id": "persisted-multiturn-article",
+      "category": "persisted-draft",
+      "request": "把这篇文章保存下来，后面还要继续修改。",
+      "expected_refs": ["references/workspace.md", "references/drafting.md", "references/review.md"],
+      "must": ["解析并校验写作工作区", "创建按需文件并更新活动指针", "保留用户原稿"],
+      "must_not": ["把文章写进 Skill 安装目录", "创建所有空阶段文件", "静默把私人资料纳入 Git"]
+    }
+  ]
+}

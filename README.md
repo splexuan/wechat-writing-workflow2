@@ -22,11 +22,13 @@
 wechat-writing/            Skill 本体，只保存通用方法
 ├── SKILL.md               入口：判断当前请求应交由哪个方法
 ├── agents/openai.yaml     展示名与默认提示
-└── references/            按需加载的具体方法
+├── assets/                可复制的作者档案、风格经验和文章 brief 模板
+└── references/            按需加载的具体方法，含工作区与恢复契约
 workspace/                 私有作者档案、样本、文章项目
-├── author-profile.md      作者档案（从 .example 复制）
-├── style-lessons.md       风格经验库（从 .example 复制）
+├── author-profile.md      作者档案（从 Skill 的 assets 模板复制）
+├── style-lessons.md       风格经验库（从 Skill 的 assets 模板复制）
 ├── writing-samples/       作者本人的代表文章
+├── active-article.md      当前跨轮文章及工作文件的相对路径
 └── articles/              需要保存或跨轮继续的文章
 ```
 
@@ -34,8 +36,8 @@ workspace/                 私有作者档案、样本、文章项目
 
 ## 快速开始
 
-1. 将 `author-profile.example.md` 复制为 `workspace/author-profile.md`，按需填写账号、声音和内容边界。
-2. 将 `style-lessons.example.md` 复制为 `workspace/style-lessons.md`，作为风格经验的沉淀表。
+1. 将 `wechat-writing/assets/author-profile.template.md` 复制为 `workspace/author-profile.md`，按需填写账号、声音和内容边界。
+2. 将 `wechat-writing/assets/style-lessons.template.md` 复制为 `workspace/style-lessons.md`，作为风格经验的沉淀表。
 3. 直接向 Skill 提需求即可，不必预先填完所有档案——只有会影响长期写作决策的信息才值得写进去。
 
 真实作者档案、文章和写作样本已被 `.gitignore` 排除，不应提交到公开仓库。
@@ -80,6 +82,8 @@ workspace/                 私有作者档案、样本、文章项目
 - 宽泛主题最多给 3 个真正不同的方向，并推荐其中 1 个。
 - 明确选题直接写，不强制重复讨论流程，也不要求重复填写作者配置。
 - 研究只在事实、时效性或风险需要时触发。
+- 事实检查会先核验来源和时效，再进入审校，不把核查自动扩成全文重写。
+- 宽泛主题要求直接成稿时，内部先完成一次轻量方向收敛，不额外打断用户。
 - 普通“润色一下”默认只改善表达并保留内容；结构重写、自然化和终检按需要分开处理。
 - 一个请求同时涉及多种修改时，按“结构与内容 → 自然化 → 终检”各执行一次。
 - 完整成稿前完成内部审校，只向用户展示成稿和少量仍需作者决定的问题。
@@ -102,6 +106,7 @@ workspace/                 私有作者档案、样本、文章项目
 | `natural-editing.md` | 要求去 AI 味、更像作者本人 | 怎样去除机器模式，同时保留事实、立场和作者声口 |
 | `review.md` | 完整成稿或修改稿的终检 | 终稿怎样检查事实、论证、读者理解与语言 |
 | `style-learning.md` | 学习范文或人工修改 | 怎样从范文和人工修改中提炼长期偏好 |
+| `workspace.md` | 保存、继续、多轮打磨或长期风格学习 | 怎样解析工作区、保护私人材料、恢复正确文章并避免覆盖原稿 |
 | `examples.md` | 规则难以判断时需要看正反例 | 关键规则的短正反例，默认不加载 |
 
 这些参考综合了旧流程、本地参考 Skills 中可迁移的方法，以及从高传播度视频文案中提取、经本工作流标准逐条过筛的手法，重新组织改写为当前工作流的规则；不把第三方固定公式或大段原文直接拼入项目。`sharpening.md` 属于最后一种来源，它的固定段落模板、对仗金句结尾和等重切面等手法已在筛选阶段剔除。自然化编辑不使用词语黑名单、标点禁令或强制口语，而是按事实风险、内容空转、公式结构、表达节奏和作者声口依次处理。
@@ -120,7 +125,9 @@ workspace/articles/YYYYMMDD-short-title/
 └── versions/        # 只有实质重写且需要保留旧稿时创建
 ```
 
-在本项目中，用户数据默认放在与 Skill 同级的 `workspace/`，不要写入 Skill 包。若 Skill 被安装到别处，则使用当前工作区中用户指定或已有的写作目录。
+跨轮任务会在写作工作区根部维护 `active-article.md`，其中只保存当前文章和工作文件的相对路径。恢复时优先使用对话里明确的文章，其次使用有效指针；没有指针且存在多篇文章时会列出最近候选让用户选择，不会静默猜测。
+
+用户数据写入当前项目中用户指定或已有的写作目录，不根据 Skill 安装位置推断路径，也不写入 Skill 包。作者档案、样本和未发布文章位于 Git 仓库时，应先确认目标目录已被忽略；详细规则见 `wechat-writing/references/workspace.md`。
 
 建立文章目录时只创建当前真正需要的 Markdown 文件，不创建空的阶段文件。已有用户草稿不得被覆盖；需要保存修改稿时写入文章目录，并保留原文件。
 
@@ -153,7 +160,24 @@ Skill 尚未自动安装到全局目录。可以直接在本项目中使用；�
 - WorkBuddy：`~/.workbuddy/skills/`
 - Codex：Codex 的 Skills 目录
 
-复制后按宿主约定调用，Codex 中为 `$wechat-writing`。
+复制后 `assets/`、`references/` 和 `agents/` 都应随 Skill 保留，再按宿主约定调用；Codex 中为 `$wechat-writing`。用户文章和作者资料不随 Skill 安装，不应复制到 Skills 目录。
+
+## 验证与回归
+
+仓库提供两层验证：
+
+```powershell
+$env:PYTHONUTF8=1
+$codexRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE '.codex' }
+python (Join-Path $codexRoot 'skills\.system\skill-creator\scripts\quick_validate.py') wechat-writing
+python scripts\validate_workflow.py
+python -m unittest discover -s tests -v
+```
+
+- 官方 `quick_validate.py` 检查 Skill frontmatter、命名和脚手架残留；Windows 中文环境需要启用 UTF-8。
+- `scripts/validate_workflow.py` 检查包结构、相对链接、模板引用和 `evals/cases.json` 场景定义。
+- `tests/test_validate_workflow.py` 覆盖正常包、缺失模板、越界链接、无效场景引用和事实核查路由退化等正反路径。
+- `evals/cases.json` 保存真实请求的期望路由、必须行为和失败信号，用于修改提示词后的人工或 Agent 前向评测；它不要求输出固定措辞。
 
 ## 许可
 

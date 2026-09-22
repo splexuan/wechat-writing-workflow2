@@ -3,9 +3,17 @@ workspace/articles/
 workspace/writing-samples/
 workspace/author-profile.md
 workspace/style-lessons.md
+workspace/active-article.md
 
 # Local agent workspace data
 .workbuddy/
+
+# Local planning state
+task_plan.md
+findings.md
+progress.md
+.planning/
+.ai-memory/*/
 
 # Local editor and runtime noise
 .DS_Store
