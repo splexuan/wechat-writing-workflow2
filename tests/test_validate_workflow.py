@@ -118,7 +118,7 @@ class ValidateWorkflowTests(unittest.TestCase):
         scenario = next(
             item
             for item in data["scenarios"]
-            if item["id"] == "broad-topic-direct-draft"
+            if item["id"] == "explicit-thesis-direct-draft"
         )
         scenario["expected_refs"].remove("references/natural-editing.md")
         validate_workflow.CASES_FILE.write_text(
@@ -133,6 +133,14 @@ class ValidateWorkflowTests(unittest.TestCase):
         text = text.replace("同层比较", "比较")
         argument.write_text(text, encoding="utf-8")
         with self.assertRaisesRegex(AssertionError, "outline gate is incomplete"):
+            validate_workflow.validate_routing_contract()
+
+    def test_direction_selection_cannot_skip_theme_confirmation(self) -> None:
+        ideation = validate_workflow.SKILL_DIR / "references" / "ideation.md"
+        text = ideation.read_text(encoding="utf-8")
+        text = text.replace("中心主题确认前", "方向选中后")
+        ideation.write_text(text, encoding="utf-8")
+        with self.assertRaisesRegex(AssertionError, "ideation gate is incomplete"):
             validate_workflow.validate_routing_contract()
 
 

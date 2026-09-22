@@ -105,8 +105,8 @@ def validate_routing_contract() -> None:
         return matches[0]
 
     contracts = [
-        ("明确要求跳过选题并直接成稿", ["references/ideation.md", "references/drafting.md"]),
-        ("已经给出可直接论证的中心判断", ["references/drafting.md", "references/natural-editing.md", "references/review.md"]),
+        ("明确要求直接成稿，但尚未确认中心主题", ["references/ideation.md"]),
+        ("用户已经明确确认最终中心主题", ["references/drafting.md", "references/natural-editing.md", "references/review.md"]),
         ("事实密集、时效性强或高风险文章", ["references/research.md", "references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"]),
         ("要求事实检查", ["references/research.md", "references/review.md"]),
         ("继续上次文章", ["references/workspace.md"]),
@@ -121,8 +121,9 @@ def validate_routing_contract() -> None:
     topic_gate_phrases = [
         "给出新主题、事件、现象、链接或研究问题，但尚未给出中心判断",
         "问题即使很具体",
-        "普通的“写一篇”不是跳过指令",
         "等待用户选择",
+        "选中方向只代表选择探索路线",
+        "等待明确确认",
     ]
     missing_gate_phrases = [
         phrase for phrase in topic_gate_phrases if phrase not in skill_text
@@ -136,6 +137,8 @@ def validate_routing_contract() -> None:
         "展示方向卡和推荐后停止",
         "质疑或重构原前提",
         "切换到不同参与者或分析层级",
+        "讨论并确认中心主题",
+        "中心主题确认前",
     ]
     missing_ideation_phrases = [
         phrase for phrase in ideation_phrases if phrase not in ideation
@@ -230,7 +233,7 @@ def validate_cases() -> int:
                 fail(f"scenario {scenario_id} references missing file: {reference}")
 
     expected_categories = {
-        "broad-direct",
+        "theme-confirmation",
         "fact-check",
         "ideation",
         "hot-analysis",
@@ -251,6 +254,10 @@ def validate_cases() -> int:
         "specific-why-question-must-ideate": "references/ideation.md",
         "ordinary-write-request-still-ideates": "references/ideation.md",
         "explicit-thesis-direct-draft": "references/drafting.md",
+        "broad-topic-direct-still-confirms-theme": "references/ideation.md",
+        "selected-direction-needs-theme-discussion": "references/ideation.md",
+        "theme-refinement-is-not-confirmation": "references/ideation.md",
+        "explicit-theme-confirmation-unlocks-brief": "references/ideation.md",
     }
     scenarios_by_id = {scenario["id"]: scenario for scenario in scenarios}
     for scenario_id, required_reference in required_topic_gate_cases.items():
@@ -275,7 +282,6 @@ def validate_cases() -> int:
         )
 
     complete_draft_cases = {
-        "broad-topic-direct-draft",
         "explicit-thesis-direct-draft",
         "current-public-issue",
         "personal-tutorial",

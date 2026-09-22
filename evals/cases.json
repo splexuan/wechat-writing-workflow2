@@ -3,12 +3,12 @@
   "description": "公众号写作 Skill 的行为回归场景。期望约束行为和路由，不约束固定措辞。",
   "scenarios": [
     {
-      "id": "broad-topic-direct-draft",
-      "category": "broad-direct",
+      "id": "broad-topic-direct-still-confirms-theme",
+      "category": "theme-confirmation",
       "request": "写一篇关于 AI 让人越来越不敢表达的公众号文章，直接给成稿。",
-      "expected_refs": ["references/ideation.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
-      "must": ["内部收敛一个有材料和边界的方向", "直接交付完整成稿", "成稿后完成自然化与精简", "成稿前完成审校"],
-      "must_not": ["把三个方向交给用户选择后暂停", "虚构作者亲历", "仅复述主题"]
+      "expected_refs": ["references/ideation.md"],
+      "must": ["内部比较方向并提出一个有边界的中心判断", "把中心判断展示给用户", "等待用户明确确认"],
+      "must_not": ["直接交付完整成稿", "创建最小brief", "开始研究或提纲"]
     },
     {
       "id": "specific-why-question-must-ideate",
@@ -35,6 +35,30 @@
       "must_not": ["再次展示候选方向并等待选择", "改换成无关中心论点", "只交付提纲"]
     },
     {
+      "id": "selected-direction-needs-theme-discussion",
+      "category": "theme-confirmation",
+      "request": "前面给了三个方向，我选方向一。",
+      "expected_refs": ["references/ideation.md"],
+      "must": ["把方向一视为探索路线而非最终主题", "继续讨论文章究竟要主张什么", "提出中心判断并等待确认"],
+      "must_not": ["立即创建brief", "开始研究", "列提纲或写正文"]
+    },
+    {
+      "id": "theme-refinement-is-not-confirmation",
+      "category": "theme-confirmation",
+      "request": "可以说是轮回、回归，回到了搞笑本身，讽刺、教育、叙事都是搞笑附带的，这也是春晚小品的局限性。",
+      "expected_refs": ["references/ideation.md"],
+      "must": ["吸收用户新增的轮回与搞笑本位判断", "指出需要保留的边界", "重述最终中心判断并请求明确确认"],
+      "must_not": ["把补充观点当成已经确认", "形成brief", "开始研究、提纲或正文"]
+    },
+    {
+      "id": "explicit-theme-confirmation-unlocks-brief",
+      "category": "theme-confirmation",
+      "request": "这个中心主题可以，就按这句继续。",
+      "expected_refs": ["references/ideation.md"],
+      "must": ["把中心主题标记为已确认", "形成最小brief", "后续研究和写作锁定该中心判断"],
+      "must_not": ["重新展示候选方向", "未经用户要求改换中心判断", "再次询问同一确认问题"]
+    },
+    {
       "id": "fact-check-existing-draft",
       "category": "fact-check",
       "request": "只帮我核查这篇稿子的事实、数字和来源是否可靠，不要重写风格。",
@@ -53,7 +77,7 @@
     {
       "id": "current-public-issue",
       "category": "hot-analysis",
-      "request": "根据本周一个 AI 行业热点写篇能让圈外人看懂并愿意转发的分析。",
+      "request": "中心主题已经确认：这次发布改变的不是功能数量，而是普通人使用 AI 的门槛。请根据本周热点写篇分析。",
       "expected_refs": ["references/research.md", "references/argument.md", "references/sharpening.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
       "must": ["先按选定方向形成最小brief", "只研究会改变结论或边界的问题", "使用当前信息核验事件", "形成有边界的中心判断", "用可查专名和真实预设支撑文章", "完成自然化与精简"],
       "must_not": ["把尚未发生的结果写成事实", "制造虚假反方", "套固定爆款段落"]
