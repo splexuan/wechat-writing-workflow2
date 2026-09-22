@@ -21,6 +21,7 @@ class ValidateWorkflowTests(unittest.TestCase):
         shutil.copytree(PROJECT_ROOT / "wechat-writing", self.root / "wechat-writing")
         (self.root / "evals").mkdir()
         shutil.copy2(PROJECT_ROOT / "evals" / "cases.json", self.root / "evals")
+        shutil.copytree(PROJECT_ROOT / "docs", self.root / "docs")
         shutil.copy2(PROJECT_ROOT / "README.md", self.root / "README.md")
         shutil.copy2(PROJECT_ROOT / "LICENSE", self.root / "LICENSE")
 
@@ -80,7 +81,13 @@ class ValidateWorkflowTests(unittest.TestCase):
     def test_fact_check_route_cannot_drop_research(self) -> None:
         skill = validate_workflow.SKILL_DIR / "SKILL.md"
         text = skill.read_text(encoding="utf-8")
-        text = text.replace("[研究与证据](references/research.md) → ", "")
+        lines = [
+            line.replace("[研究与证据](references/research.md) → ", "")
+            if "要求事实检查" in line
+            else line
+            for line in text.splitlines()
+        ]
+        text = "\n".join(lines) + "\n"
         skill.write_text(text, encoding="utf-8")
         with self.assertRaisesRegex(AssertionError, "要求事实检查"):
             validate_workflow.validate_routing_contract()
@@ -105,6 +112,28 @@ class ValidateWorkflowTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(AssertionError, "missing topic-gate behavior scenario"):
             validate_workflow.validate_cases()
+
+    def test_complete_drafts_cannot_skip_natural_editing(self) -> None:
+        data = json.loads(validate_workflow.CASES_FILE.read_text(encoding="utf-8"))
+        scenario = next(
+            item
+            for item in data["scenarios"]
+            if item["id"] == "broad-topic-direct-draft"
+        )
+        scenario["expected_refs"].remove("references/natural-editing.md")
+        validate_workflow.CASES_FILE.write_text(
+            json.dumps(data, ensure_ascii=False), encoding="utf-8"
+        )
+        with self.assertRaisesRegex(AssertionError, "must include natural editing"):
+            validate_workflow.validate_cases()
+
+    def test_outline_gate_cannot_drop_same_level_comparison(self) -> None:
+        argument = validate_workflow.SKILL_DIR / "references" / "argument.md"
+        text = argument.read_text(encoding="utf-8")
+        text = text.replace("同层比较", "比较")
+        argument.write_text(text, encoding="utf-8")
+        with self.assertRaisesRegex(AssertionError, "outline gate is incomplete"):
+            validate_workflow.validate_routing_contract()
 
 
 if __name__ == "__main__":

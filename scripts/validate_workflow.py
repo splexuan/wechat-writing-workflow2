@@ -26,6 +26,7 @@ def validate_required_files() -> None:
         SKILL_DIR / "assets" / "author-profile.template.md",
         SKILL_DIR / "assets" / "style-lessons.template.md",
         SKILL_DIR / "assets" / "article-brief.template.md",
+        ROOT / "docs" / "wechat-writing-skill-workflow.png",
         CASES_FILE,
     ]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.is_file()]
@@ -105,6 +106,8 @@ def validate_routing_contract() -> None:
 
     contracts = [
         ("明确要求跳过选题并直接成稿", ["references/ideation.md", "references/drafting.md"]),
+        ("已经给出可直接论证的中心判断", ["references/drafting.md", "references/natural-editing.md", "references/review.md"]),
+        ("事实密集、时效性强或高风险文章", ["references/research.md", "references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"]),
         ("要求事实检查", ["references/research.md", "references/review.md"]),
         ("继续上次文章", ["references/workspace.md"]),
         ("学习作者风格", ["references/style-learning.md", "references/workspace.md"]),
@@ -140,12 +143,55 @@ def validate_routing_contract() -> None:
     if missing_ideation_phrases:
         fail(f"ideation gate is incomplete: {', '.join(missing_ideation_phrases)}")
 
+    workflow_phrases = [
+        "最小 brief",
+        "自然化与精简",
+        "重要机制和关键反方讲透",
+        "默认只交付成稿",
+    ]
+    missing_workflow_phrases = [
+        phrase for phrase in workflow_phrases if phrase not in skill_text
+    ]
+    if missing_workflow_phrases:
+        fail(f"completion workflow is incomplete: {', '.join(missing_workflow_phrases)}")
+
     drafting = (SKILL_DIR / "references" / "drafting.md").read_text(encoding="utf-8")
-    if "[审校](review.md)" not in drafting:
-        fail("drafting flow must route completed drafts to review.md")
+    drafting_phrases = [
+        "所有新生成的完整初稿和全文改稿",
+        "先转入 [自然化编辑](natural-editing.md)",
+        "按重要性分配解释量",
+    ]
+    missing_drafting_phrases = [
+        phrase for phrase in drafting_phrases if phrase not in drafting
+    ]
+    if missing_drafting_phrases:
+        fail(f"drafting completion gate is incomplete: {', '.join(missing_drafting_phrases)}")
+
+    argument = (SKILL_DIR / "references" / "argument.md").read_text(encoding="utf-8")
+    argument_phrases = [
+        "同层比较",
+        "一节一职",
+        "去重合并",
+        "旁枝止步",
+        "结尾不加料",
+    ]
+    missing_argument_phrases = [
+        phrase for phrase in argument_phrases if phrase not in argument
+    ]
+    if missing_argument_phrases:
+        fail(f"outline gate is incomplete: {', '.join(missing_argument_phrases)}")
+
+    natural_editing = (SKILL_DIR / "references" / "natural-editing.md").read_text(
+        encoding="utf-8"
+    )
+    if "完整新稿和全文改稿必须执行一轮" not in natural_editing:
+        fail("natural-editing pass must be mandatory for complete drafts")
+
     research = (SKILL_DIR / "references" / "research.md").read_text(encoding="utf-8")
     if "普通单轮请求可在当前任务上下文中维护" not in research:
         fail("single-turn research must support a non-persistent evidence ledger")
+    if "研究必须发生在方向和最小 brief 确定之后" not in research:
+        fail("research must follow the chosen direction and minimum brief")
 
 
 def validate_cases() -> int:
@@ -216,6 +262,35 @@ def validate_cases() -> int:
                 f"topic-gate scenario {scenario_id} must reference: "
                 f"{required_reference}"
             )
+
+    required_quality_cases = {
+        "concise-complete-draft",
+        "outline-structure-gate",
+    }
+    missing_quality_cases = required_quality_cases - scenarios_by_id.keys()
+    if missing_quality_cases:
+        fail(
+            "missing writing-quality behavior scenarios: "
+            + ", ".join(sorted(missing_quality_cases))
+        )
+
+    complete_draft_cases = {
+        "broad-topic-direct-draft",
+        "explicit-thesis-direct-draft",
+        "current-public-issue",
+        "personal-tutorial",
+        "deep-revision-and-naturalize",
+        "single-turn-research-no-files",
+        "persisted-multiturn-article",
+        "concise-complete-draft",
+        "outline-structure-gate",
+    }
+    for scenario_id in complete_draft_cases:
+        scenario = scenarios_by_id.get(scenario_id)
+        if scenario is None:
+            fail(f"missing complete-draft behavior scenario: {scenario_id}")
+        if "references/natural-editing.md" not in scenario["expected_refs"]:
+            fail(f"complete-draft scenario must include natural editing: {scenario_id}")
     return len(scenarios)
 
 

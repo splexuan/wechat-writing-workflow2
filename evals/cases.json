@@ -6,8 +6,8 @@
       "id": "broad-topic-direct-draft",
       "category": "broad-direct",
       "request": "写一篇关于 AI 让人越来越不敢表达的公众号文章，直接给成稿。",
-      "expected_refs": ["references/ideation.md", "references/drafting.md", "references/review.md"],
-      "must": ["内部收敛一个有材料和边界的方向", "直接交付完整成稿", "成稿前完成审校"],
+      "expected_refs": ["references/ideation.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["内部收敛一个有材料和边界的方向", "直接交付完整成稿", "成稿后完成自然化与精简", "成稿前完成审校"],
       "must_not": ["把三个方向交给用户选择后暂停", "虚构作者亲历", "仅复述主题"]
     },
     {
@@ -30,8 +30,8 @@
       "id": "explicit-thesis-direct-draft",
       "category": "direct-with-thesis",
       "request": "就按‘分发结构决定喜剧形态’这个判断直接写，不要再给方向。",
-      "expected_refs": ["references/drafting.md", "references/review.md"],
-      "must": ["保留用户给出的中心判断", "直接完成正文", "成稿前完成审校"],
+      "expected_refs": ["references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["保留用户给出的中心判断", "直接完成正文", "完成自然化与精简", "成稿前完成审校"],
       "must_not": ["再次展示候选方向并等待选择", "改换成无关中心论点", "只交付提纲"]
     },
     {
@@ -54,16 +54,16 @@
       "id": "current-public-issue",
       "category": "hot-analysis",
       "request": "根据本周一个 AI 行业热点写篇能让圈外人看懂并愿意转发的分析。",
-      "expected_refs": ["references/research.md", "references/argument.md", "references/sharpening.md", "references/drafting.md", "references/review.md"],
-      "must": ["使用当前信息核验事件", "形成有边界的中心判断", "用可查专名和真实预设支撑文章"],
+      "expected_refs": ["references/research.md", "references/argument.md", "references/sharpening.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["先按选定方向形成最小brief", "只研究会改变结论或边界的问题", "使用当前信息核验事件", "形成有边界的中心判断", "用可查专名和真实预设支撑文章", "完成自然化与精简"],
       "must_not": ["把尚未发生的结果写成事实", "制造虚假反方", "套固定爆款段落"]
     },
     {
       "id": "personal-tutorial",
       "category": "tutorial",
       "request": "用我给的操作记录写一篇新手教程，步骤清楚即可。",
-      "expected_refs": ["references/drafting.md", "references/review.md"],
-      "must": ["说明前提、动作、判断条件和完成标准", "只使用用户提供的个人材料", "保持教程主线"],
+      "expected_refs": ["references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["说明前提、动作、判断条件和完成标准", "只使用用户提供的个人材料", "保持教程主线", "完成自然化与精简"],
       "must_not": ["强行制造争议性中心论点", "加载锐化手法改成公共议题评论", "虚构操作结果"]
     },
     {
@@ -110,17 +110,33 @@
       "id": "single-turn-research-no-files",
       "category": "single-turn-research",
       "request": "查清一个最新产品变化，整理成一段可直接发布的说明，不用保存文件。",
-      "expected_refs": ["references/research.md", "references/drafting.md", "references/review.md"],
-      "must": ["在当前任务中维护主张证据关系", "核验产品直接来源和日期", "直接在对话中交付"],
+      "expected_refs": ["references/research.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["在当前任务中维护主张证据关系", "核验产品直接来源和日期", "自然化并删去不必要说明", "直接在对话中交付"],
       "must_not": ["强制创建 sources.md", "创建文章目录", "把产品宣称写成稳定结果"]
     },
     {
       "id": "persisted-multiturn-article",
       "category": "persisted-draft",
       "request": "把这篇文章保存下来，后面还要继续修改。",
-      "expected_refs": ["references/workspace.md", "references/drafting.md", "references/review.md"],
-      "must": ["解析并校验写作工作区", "创建按需文件并更新活动指针", "保留用户原稿"],
+      "expected_refs": ["references/workspace.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["解析并校验写作工作区", "创建按需文件并更新活动指针", "保留用户原稿", "完整成稿完成自然化与精简"],
       "must_not": ["把文章写进 Skill 安装目录", "创建所有空阶段文件", "静默把私人资料纳入 Git"]
+    },
+    {
+      "id": "concise-complete-draft",
+      "category": "concise-draft",
+      "request": "按已经确认的方向写成公众号文章。重要的地方讲清楚，别啰嗦，也别写得像AI。",
+      "expected_refs": ["references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["核心机制和关键反方获得必要解释", "删除不改变理解的背景和重复例子", "完成一轮自然化与精简", "只交付成稿和必要问题"],
+      "must_not": ["把所有部分写成同等篇幅", "输出长篇流程说明", "用虚构经历制造人味"]
+    },
+    {
+      "id": "outline-structure-gate",
+      "category": "outline-gate",
+      "request": "方向和brief已经确认，请把提纲理顺后写成完整文章。",
+      "expected_refs": ["references/argument.md", "references/drafting.md", "references/natural-editing.md", "references/review.md"],
+      "must": ["检查并列章节使用同一划分口径", "保证每节只有一个主要职责", "合并职责重合的章节", "阻止结尾引入新证据或新议题", "完成自然化与精简"],
+      "must_not": ["把不同逻辑层级直接并列", "保留另一篇文章才能回答的旁枝", "跳过自然化直接交付"]
     }
   ]
 }
